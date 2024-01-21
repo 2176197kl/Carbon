@@ -12,26 +12,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private LoginTicketInterceptor loginTicketInterceptor;
-
-    @Autowired
-    private MessageInterceptor messageInterceptor;
-
-    @Autowired
-    private DataInterceptor dataInterceptor;
+//    @Autowired
+//    private LoginTicketInterceptor loginTicketInterceptor;
+//
+//    @Autowired
+//    private MessageInterceptor messageInterceptor;
+//
+//    @Autowired
+//    private DataInterceptor dataInterceptor;
 
     // 对除静态资源外所有路径进行拦截
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginTicketInterceptor)
-                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
-
-        registry.addInterceptor(messageInterceptor)
-                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
-
-        registry.addInterceptor(dataInterceptor)
-                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
+//        registry.addInterceptor(loginTicketInterceptor)
+//                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
+//
+//        registry.addInterceptor(messageInterceptor)
+//                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
+//
+//        registry.addInterceptor(dataInterceptor)
+//                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/editor-md/**", "/editor-md-upload/**");
     }
 
     // 配置虚拟路径映射访问
