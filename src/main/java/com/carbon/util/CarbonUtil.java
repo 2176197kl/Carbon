@@ -8,10 +8,18 @@ import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CarbonUtil {
 
-
+    /**
+     * 生成随机字符串
+     * @return
+     */
+    public static String generateUUID() {
+        // 去除生成的随机字符串中的 ”-“
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 
     /**
      * md5 加密

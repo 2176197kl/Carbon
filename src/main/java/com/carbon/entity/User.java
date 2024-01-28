@@ -10,8 +10,28 @@ public class User {
 
     private int id;
     private String username;
-    private String password;
     private int type;
+    private String account;
+    private String password;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
     private String headerUrl;
     private Date createTime;
 
@@ -30,7 +50,13 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+    public String getAccount() {
+        return account;
+    }
 
+    public void setAccount(String account) {
+        this.account = account;
+    }
     public String getPassword() {
         return password;
     }
@@ -69,8 +95,11 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", type=" + type +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", headerUrl='" + headerUrl + '\'' +
                 ", createTime=" + createTime +
                 '}';

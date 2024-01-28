@@ -43,38 +43,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Carb
         http.authorizeRequests()
                 .antMatchers(
                     "/user/setting",
-                        "/user/upload",
-                        "/discuss/add",
-                        "/discuss/publish",
-                        "/comment/add/**",
-                        "/letter/**",
-                        "/notice/**",
-                        "/like",
-                        "/follow",
-                        "/unfollow"
+                        "/user/upload"
                 )
                 .hasAnyAuthority(
-                        AUTHORITY_USER,
-                        AUTHORITY_ADMIN,
-                        AUTHORITY_MODERATOR
-                )
-
-                .antMatchers(
-                    "/discuss/top",
-                        "/discuss/wonderful"
-                )
-                .hasAnyAuthority(
-                        AUTHORITY_MODERATOR
-                )
-
-                .antMatchers(
-                        "/discuss/delete",
-                        "/discuss/delete/",
-                        "/data/**"
-                )
-                .hasAnyAuthority(
+                        AUTHORITY_ENTERPRISE,
+                        AUTHORITY_DATA_AUDITOR,
+                        AUTHORITY_THIRD_PARTY_REGULATOR,
                         AUTHORITY_ADMIN
                 )
+
+//                .antMatchers(
+//                   ""
+//                )
+//                .hasAnyAuthority(
+//                        AUTHORITY_ENTERPRISE
+//                )
+//
+//                .antMatchers(
+//                    ""
+//                )
+//                .hasAnyAuthority(
+//                        AUTHORITY_DATA_AUDITOR
+//                )
+//
+//                .antMatchers(
+//                        ""
+//                )
+//                .hasAnyAuthority(
+//                        AUTHORITY_THIRD_PARTY_REGULATOR
+//                )
+//
+//                .antMatchers(
+//                        ""
+//                )
+//                .hasAnyAuthority(
+//                        AUTHORITY_ADMIN
+//                )
 
                 .anyRequest().permitAll()
 

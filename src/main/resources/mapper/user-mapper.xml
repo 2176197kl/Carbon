@@ -5,11 +5,11 @@
 <mapper namespace="com.carbon.dao.UserMapper">
 
     <sql id = "insertFields">
-        username, password, salt, email, type, status, activation_code, header_url, create_time
+        username, account, password, phone, email, type, header_url, create_time
     </sql>
 
     <sql id = "selectFields">
-        id, username, password, salt, email, type, status, activation_code, header_url, create_time
+        id, username, account, password, phone, email, type, header_url, create_time
     </sql>
 
     <!--根据 Id 查询用户信息-->
@@ -19,18 +19,18 @@
         where id = #{id}
     </select>
 
-    <!--根据 Username 查询用户信息-->
+    <!--根据 account 查询用户信息-->
     <select id="selectByName" resultType="com.carbon.entity.User">
         select <include refid="selectFields"></include>
         from users
-        where username = #{username}
+        where account = #{account}
     </select>
 
 
     <!--插入用户信息（注册）-->
     <insert id="insertUser" parameterType="com.carbon.entity.User" keyProperty="id">
         insert into users (<include refid="insertFields"></include>)
-        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+        values(#{username},#{account}, #{password}, #{phone}, #{email}, #{type}, #{headerUrl}, #{createTime})
     </insert>
 
 
@@ -42,6 +42,10 @@
     <!--修改密码-->
     <update id="updatePassword">
         update users set password = #{password} where id = #{id}
+    </update>
+    <!--修改手机号-->
+    <update id="updatePhone">
+        update users set phone = #{newPhoneNumber} where id = #{id}
     </update>
 
 </mapper>
