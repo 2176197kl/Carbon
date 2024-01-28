@@ -48,4 +48,5 @@ public interface UserMapper {
      */
     int updatePassword(int id, String password);
 
+    int updatePhone(int id,String newPhoneNumber);
 }
