@@ -7,6 +7,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.carbon.DTO.LoginTicket;
 import com.carbon.dao.UserMapper;
 import com.carbon.entity.User;
 import com.carbon.util.CarbonUtil;
@@ -16,12 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,15 +77,15 @@ public class SMSService {
         if (user == null) {
             throw new IllegalArgumentException("参数不能为空");
         }
-        if (StringUtils.isBlank(user.getAccount())) {
-            map.put("accountMsg", "账号不能为空");
-            return map;
-        }
-
-        if (StringUtils.isBlank(user.getPassword())) {
-            map.put("passwordMsg", "密码不能为空");
-            return map;
-        }
+//        if (StringUtils.isBlank(user.getAccount())) {
+//            map.put("accountMsg", "账号不能为空");
+//            return map;
+//        }
+//
+//        if (StringUtils.isBlank(user.getPassword())) {
+//            map.put("passwordMsg", "密码不能为空");
+//            return map;
+//        }
 
         if (StringUtils.isBlank(user.getPhone())) {
             map.put("phoneMsg", "手机号不能为空");
@@ -97,7 +93,7 @@ public class SMSService {
         }
 
         // 验证账号是否已存在
-        User u = userMapper.selectByName(user.getAccount());
+        User u = userMapper.selectByPhone(user.getPhone());
         if (u != null) {
             map.put("accountMsg", "该账号已存在");
             return map;
@@ -106,6 +102,8 @@ public class SMSService {
 
 
         // 注册用户
+        user.setAccount(user.getPhone());
+        user.setPassword(user.getPhone());
         user.setType(0); // 默认普通用户
         user.setUsername("新用户");
         // 随机头像（用户登录后可以自行修改）
@@ -114,6 +112,7 @@ public class SMSService {
         userMapper.insertUser(user);
 
 
+        map.put("success","注册成功");
         return map;
     }
     /**
@@ -152,7 +151,7 @@ public class SMSService {
         }
 
         // 用户名和密码均正确，为该用户生成登录凭证
-        com.carbon.entity.LoginTicket loginTicket = new com.carbon.entity.LoginTicket();
+        LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getId());
         loginTicket.setTicket(CarbonUtil.generateUUID()); // 随机凭证
         loginTicket.setStatus(0); // 设置凭证状态为有效（当用户登出的时候，设置凭证状态为无效）

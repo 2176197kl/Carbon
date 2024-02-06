@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.carbon.dao.CompanyMapper">
+    <sql id = "insertFields">
+        boss_id, name, adress, proof, create_time
+    </sql>
+
+    <sql id = "selectFields">
+        id,boss_id, name, adress, proof, create_time
+    </sql>
+
+    <!--根据 Id 查询公司信息-->
+    <select id = "selectById" resultType = "com.carbon.entity.Company">
+        select <include refid="selectFields"></include>
+        from company
+        where id = #{id}
+    </select>
+
+    <!--根据 boss_Id 查询公司信息-->
+    <select id = "selectByBossId" resultType = "com.carbon.entity.Company">
+        select <include refid="selectFields"></include>
+        from company
+        where boss_id = #{bossId}
+    </select>
+
+    <!--根据 name 查询公司信息-->
+    <select id="selectByName" resultType="com.carbon.entity.Company">
+        select <include refid="selectFields"></include>
+        from company
+        where name = #{name}
+    </select>
+
+    <!--插入公司信息-->
+    <insert id="insertCompany" parameterType="com.carbon.entity.Company" keyProperty="id">
+        insert into company (<include refid="insertFields"></include>)
+        values(#{boss_id},#{name}, #{adress}, #{proof}, #{createTime})
+    </insert>
+</mapper>

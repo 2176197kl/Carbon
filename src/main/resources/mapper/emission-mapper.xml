@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.carbon.dao.EmissionMapper">
+    <sql id = "insertFields">
+        company_id, status, type, content, create_time
+    </sql>
+
+    <sql id = "selectFields">
+        id,company_id, status, type, content, create_time
+    </sql>
+
+    <!--根据 Id 查询报告信息-->
+    <select id = "selectById" resultType = "com.carbon.entity.Emission">
+        select <include refid="selectFields"></include>
+        from emission
+        where id = #{id}
+    </select>
+
+
+
+    <!--完成报告信息-->
+    <insert id="finishEmission" parameterType="com.carbon.entity.Emission" keyProperty="id">
+        insert into emission (<include refid="insertFields"></include>)
+        values(#{company_id},#{status}, #{type}, #{content}, #{createTime})
+    </insert>
+</mapper>

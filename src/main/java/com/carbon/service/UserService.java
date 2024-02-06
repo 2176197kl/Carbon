@@ -1,7 +1,7 @@
 package com.carbon.service;
 
 import com.carbon.dao.UserMapper;
-import com.carbon.entity.LoginTicket;
+import com.carbon.DTO.LoginTicket;
 import com.carbon.entity.User;
 import com.carbon.util.CarbonConstant;
 import com.carbon.util.CarbonUtil;
@@ -15,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -145,7 +144,7 @@ public class UserService implements CarbonConstant {
         }
 
         // 用户名和密码均正确，为该用户生成登录凭证
-        com.carbon.entity.LoginTicket loginTicket = new com.carbon.entity.LoginTicket();
+        LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getId());
         loginTicket.setTicket(CarbonUtil.generateUUID()); // 随机凭证
         loginTicket.setStatus(0); // 设置凭证状态为有效（当用户登出的时候，设置凭证状态为无效）

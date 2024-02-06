@@ -15,6 +15,16 @@ public class User {
     private String password;
     private String phone;
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    private String otp;
+
     public String getPhone() {
         return phone;
     }

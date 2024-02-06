@@ -16,11 +16,11 @@ public interface UserMapper {
     User selectById (int id);
 
     /**
-     * 根据 username 查询用户
-     * @param username
+     * 根据 account 查询用户
+     * @param account
      * @return
      */
-    User selectByName(String username);
+    User selectByName(String account);
 
 
     /**
@@ -49,4 +49,6 @@ public interface UserMapper {
     int updatePassword(int id, String password);
 
     int updatePhone(int id,String newPhoneNumber);
+
+    User selectByPhone(String phone);
 }

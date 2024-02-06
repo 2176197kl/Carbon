@@ -18,6 +18,7 @@ import static com.carbon.util.CarbonConstant.DEFAULT_EXPIRED_SECONDS;
 import static com.carbon.util.CarbonConstant.REMEMBER_EXPIRED_SECONDS;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/sms")
 public class SmsController {
 
@@ -29,30 +30,35 @@ public class SmsController {
     private SMSService smsService;
 
     @PostMapping("/send-otp")
-    public Map<String, Object> sendOTP(@RequestParam String phoneNumber) {
-        return otpService.SmsSendOTP(phoneNumber);
+    public Map<String, Object> sendOTP(@RequestBody User user) {
+        return otpService.SmsSendOTP(user.getPhone());
     }
     @Value("${server.servlet.context-path}")
     private String contextPath;
     @PostMapping("/login")
-    public String login(@RequestParam String phoneNumber, @RequestParam String otp,
+    public User login(@RequestBody User user,
                             @RequestParam(value = "rememberMe", required = false) boolean rememberMe,
                             Model model, HttpServletResponse response)
     {
         // 凭证过期时间（是否记住我）
         int expiredSeconds = rememberMe ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
-        Map<String,Object>map= otpService.SmsVerifyOTP(phoneNumber, otp);
+        //若未注册，立即注册，账号与密码和手机同号
+        Map<String, Object> map1 = smsService.register(user);
+        Map<String,Object>map= otpService.SmsVerifyOTP(user.getPhone(), user.getOtp());
+
+
+
         if (map.containsKey("success")) {
             // 账号和密码均正确，则服务端会生成 ticket，浏览器通过 cookie 存储 ticket
             Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
             cookie.setPath(contextPath); // cookie 有效范围
             cookie.setMaxAge(expiredSeconds);
             response.addCookie(cookie);
-            return "redirect:/index";
+            return user;
         }
         else {
             model.addAttribute("fail", map.get("fail"));
-            return "fail";
+            return null;
         }
     }
 /*
@@ -63,7 +69,7 @@ public class SmsController {
  */
     @PostMapping("/register")
     public String register(@RequestParam String phoneNumber, @RequestParam String otp,
-                           @RequestParam String account,@RequestParam String password,Model model) {
+                           @RequestParam(value = "account", required = false)String account,@RequestParam String password,Model model) {
         Map<String,Object>map= otpService.SmsVerifyOTP(phoneNumber, otp);
         if(map.containsKey("success"))
         {
@@ -73,7 +79,7 @@ public class SmsController {
             Map<String, Object> map2 = smsService.register(user);
             if (map2 == null || map2.isEmpty()) {
                 model.addAttribute("msg", "注册成功, 快去登录吧!");
-                model.addAttribute("target", "/index");
+                model.addAttribute("target", "/login");
                 return "/login";
             } else {
                 model.addAttribute("accountMsg", map2.get("accountMsg"));
