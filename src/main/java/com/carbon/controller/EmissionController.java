@@ -1,14 +1,13 @@
 package com.carbon.controller;
 
 import com.carbon.DTO.EmissionReport.ElectrolyticAluminum;
+import com.carbon.DTO.Response;
+import com.carbon.entity.Emission;
 import com.carbon.service.EmissionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/emission")
@@ -55,6 +54,28 @@ public class EmissionController {
         //将报告上传至审核
         emissionService.finishEmission(json,"电解铝生产");
         return json;
+    }
+
+    @GetMapping("/status")
+    public Emission selectByStatus(@RequestParam int status){
+        return emissionService.selectByStatus(status);
+    }
+
+    @GetMapping("/type")
+    public Emission selectByStatus(@RequestParam String type){
+        return emissionService.selectByType(type);
+    }
+
+    @GetMapping("/updateStatus")
+    public Response updateStatus(@RequestParam int id,@RequestParam int status){
+        emissionService.updateStatus(id,status);
+        if (status==1){
+            return new Response().success(null,"已将报告上链");
+        }
+        if (status==2){
+            return new Response().fail(null,"报告有误，被驳回");
+        }
+        return new Response().fail(null,"未响应");
     }
 }
 

@@ -27,4 +27,16 @@ public class EmissionService {
 
         emissionMapper.finishEmission(emission);
     }
+
+    public Emission selectByStatus(int status) {
+        return emissionMapper.selectByStatus(status);
+    }
+
+    public Emission selectByType(String type) {
+        return emissionMapper.selectByType(type);
+    }
+
+    public void updateStatus(int id,int status) {
+        emissionMapper.updateStatus(id,status);
+    }
 }

@@ -18,7 +18,24 @@
         where id = #{id}
     </select>
 
+    <!--根据 Status 查询报告信息-->
+    <select id = "selectByStatus" resultType = "com.carbon.entity.Emission">
+        select <include refid="selectFields"></include>
+        from emission
+        where status = #{status}
+    </select>
 
+    <!--根据 type 查询报告信息-->
+    <select id = "selectByType" resultType = "com.carbon.entity.Emission">
+        select <include refid="selectFields"></include>
+        from emission
+        where type = #{type}
+    </select>
+
+    <!--根据 id 上链报告信息-->
+    <select id = "updateStatus" resultType = "com.carbon.entity.Emission">
+        update emission set status = #{status} where id = #{id}
+    </select>
 
     <!--完成报告信息-->
     <insert id="finishEmission" parameterType="com.carbon.entity.Emission" keyProperty="id">

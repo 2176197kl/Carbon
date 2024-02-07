@@ -11,4 +11,10 @@ public interface EmissionMapper {
 
 
      Emission selectById(int Id);
+
+    Emission selectByStatus(int status);
+
+    Emission selectByType(String type);
+
+    void updateStatus(int id,int status);
 }
