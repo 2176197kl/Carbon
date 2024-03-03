@@ -1,6 +1,7 @@
 package com.carbon.controller;
 
-import com.carbon.DTO.EmissionReport.ElectrolyticAluminum;
+import com.carbon.DTO.EmissionReport.EleAl;
+import com.carbon.DTO.EmissionReport.MgSmelt;
 import com.carbon.DTO.Response;
 import com.carbon.entity.Emission;
 import com.carbon.service.EmissionService;
@@ -15,47 +16,76 @@ public class EmissionController {
 
     @Autowired
     private EmissionService emissionService;
-    @PostMapping("/EAl")
-    public String calculateEmission(@RequestBody ElectrolyticAluminum electrolyticAluminum) throws JsonProcessingException {
-
-        // 计算每种燃料数据
-        for (ElectrolyticAluminum.FuelData fuelData : electrolyticAluminum.fuelList) {
-            // 计算活动水平数据
-            fuelData.activityData= fuelData.ncv * fuelData.fuelConsumption;
-            // 计算排放因子数据
-            fuelData.emissionFactor = (fuelData.carbonContent * fuelData.oxidationFactor * 44) / 12;
-            // 计算燃烧排放
-            electrolyticAluminum.eCombustion += fuelData.activityData * fuelData.emissionFactor;
-        }
-
-        //计算能源作为原材料用途的排放
-        electrolyticAluminum.eMaterial=electrolyticAluminum.siliconFurnaceProduction*electrolyticAluminum.emissionFactorSiliconFurnace;
-
-        //计算工业生产过程排放
-        electrolyticAluminum.emissionFactorLimeBurning=electrolyticAluminum.DX*0.478;
-        electrolyticAluminum.eProcess=electrolyticAluminum.emissionFactorLimeBurning*electrolyticAluminum.limeConsumption;
-
-        //计算净购入的电力、热力消费的排放
-        electrolyticAluminum.netElectricityConsumption=electrolyticAluminum.EpurchaseQuantity-electrolyticAluminum.EexportQuantity;
-        electrolyticAluminum.netHeatConsumption=electrolyticAluminum.HpurchaseQuantity-electrolyticAluminum.HexportQuantity;
-        electrolyticAluminum.eElectricityHeat=electrolyticAluminum.netElectricityConsumption*electrolyticAluminum.emissionFactorElectricity
-                                              +electrolyticAluminum.netHeatConsumption*electrolyticAluminum.emissionFactorHeat;
-
-
-        // 累加总排放量
-        electrolyticAluminum.eTotal = electrolyticAluminum.eCombustion+ electrolyticAluminum.eMaterial+
-                                      electrolyticAluminum.eProcess+electrolyticAluminum.eElectricityHeat;
-
-
+//    @PostMapping("/MgSmelt")
+//    public String calculateEmission(@RequestBody MgSmelt mgSmelt) throws JsonProcessingException {
+//
+//        // 计算每种燃料数据
+//        for (MgSmelt.FuelData fuelData : mgSmelt.fuelList) {
+//            // 计算活动水平数据
+//            fuelData.activityData= fuelData.ncv * fuelData.fuelConsumption;
+//            // 计算排放因子数据
+//            fuelData.emissionFactor = (fuelData.carbonContent * fuelData.oxidationFactor * 44) / 12;
+//            // 计算燃烧排放
+//            mgSmelt.eCombustion += fuelData.activityData * fuelData.emissionFactor;
+//        }
+//
+//        //计算能源作为原材料用途的排放
+//        mgSmelt.eMaterial= mgSmelt.siliconFurnaceProduction* mgSmelt.emissionFactorSiliconFurnace;
+//
+//        //计算工业生产过程排放
+//        mgSmelt.emissionFactorLimeBurning= mgSmelt.DX*0.478;
+//        mgSmelt.eProcess= mgSmelt.emissionFactorLimeBurning* mgSmelt.limeConsumption;
+//
+//        //计算净购入的电力、热力消费的排放
+//        mgSmelt.netElectricityConsumption= mgSmelt.EpurchaseQuantity- mgSmelt.EexportQuantity;
+//        mgSmelt.netHeatConsumption= mgSmelt.HpurchaseQuantity- mgSmelt.HexportQuantity;
+//        mgSmelt.eElectricityHeat= mgSmelt.netElectricityConsumption* mgSmelt.emissionFactorElectricity
+//                                              + mgSmelt.netHeatConsumption* mgSmelt.emissionFactorHeat;
+//
+//
+//        // 累加总排放量
+//        mgSmelt.eTotal = mgSmelt.eCombustion+ mgSmelt.eMaterial+
+//                                      mgSmelt.eProcess+ mgSmelt.eElectricityHeat;
+//
+//
+//        // 使用ObjectMapper转换为JSON字符串
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(mgSmelt);
+//
+//        //将报告上传至审核
+//        emissionService.finishEmission(json,"镁冶炼");
+//        return json;
+//    }
+    @PostMapping("calculateEleAl")
+    public String calculateEleAl(@RequestBody EleAl eleAl) throws JsonProcessingException {
         // 使用ObjectMapper转换为JSON字符串
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(electrolyticAluminum);
+        String json = objectMapper.writeValueAsString(eleAl);
 
         //将报告上传至审核
-        emissionService.finishEmission(json,"电解铝生产");
+        emissionService.finishEmission(json,"电解铝");
         return json;
     }
+    @PostMapping("calculateMgSmelt")
+    public String calculateMgSmelt(@RequestBody EleAl eleAl) throws JsonProcessingException {
+        // 使用ObjectMapper转换为JSON字符串
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(eleAl);
 
+        //将报告上传至审核
+        emissionService.finishEmission(json,"镁冶炼");
+        return json;
+    }
+    @PostMapping("calculateFlatGlass")
+    public String calculateFlatGlass(@RequestBody EleAl eleAl) throws JsonProcessingException {
+        // 使用ObjectMapper转换为JSON字符串
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(eleAl);
+
+        //将报告上传至审核
+        emissionService.finishEmission(json,"平板玻璃");
+        return json;
+    }
     @GetMapping("/status")
     public Emission selectByStatus(@RequestParam int status){
         return emissionService.selectByStatus(status);

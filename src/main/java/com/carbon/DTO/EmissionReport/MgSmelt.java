@@ -2,7 +2,7 @@ package com.carbon.DTO.EmissionReport;
 
 import java.util.List;
 
-public class ElectrolyticAluminum {
+public class MgSmelt {
     public double eTotal; // 总排放量
     public double eCombustion; // 燃料燃烧排放
     public double eMaterial; // 能源作为原材料用途的排放
