@@ -34,12 +34,12 @@
 
     <!--根据 id 上链报告信息-->
     <select id = "updateStatus" resultType = "com.carbon.entity.Emission">
-        update emission set status = #{status} where id = #{id}
+        update emission set status = #{status},auditor_id = #{auditor_id} where id = #{id}
     </select>
 
     <!--完成报告信息-->
     <insert id="finishEmission" parameterType="com.carbon.entity.Emission" keyProperty="id">
         insert into emission (<include refid="insertFields"></include>)
-        values(#{company_id},#{status}, #{type}, #{content}, #{createTime})
+        values(#{company_id},-1,  #{status}, #{type}, #{proof},#{content}, #{createTime})
     </insert>
 </mapper>

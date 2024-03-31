@@ -1,14 +1,22 @@
 package com.carbon.controller;
 
 import com.carbon.DTO.EmissionReport.EleAl;
+import com.carbon.DTO.EmissionReport.FlatGlass;
 import com.carbon.DTO.EmissionReport.MgSmelt;
 import com.carbon.DTO.Response;
 import com.carbon.entity.Emission;
 import com.carbon.service.EmissionService;
+import com.carbon.service.ImgService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.carbon.util.CarbonUtil.linkedListToString;
 
 @RestController
 @RequestMapping("/emission")
@@ -16,6 +24,8 @@ public class EmissionController {
 
     @Autowired
     private EmissionService emissionService;
+    @Autowired
+    private ImgService imgService;
 //    @PostMapping("/MgSmelt")
 //    public String calculateEmission(@RequestBody MgSmelt mgSmelt) throws JsonProcessingException {
 //
@@ -56,49 +66,84 @@ public class EmissionController {
 //        emissionService.finishEmission(json,"镁冶炼");
 //        return json;
 //    }
-    @PostMapping("calculateEleAl")
+    @PostMapping("/calculateEleAl")
     public String calculateEleAl(@RequestBody EleAl eleAl) throws JsonProcessingException {
         // 使用ObjectMapper转换为JSON字符串
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(eleAl);
 
+        //上传证明材料图片
+        LinkedList<String> listProof=new LinkedList<>();
+        for (MultipartFile file:eleAl.getProofFile()) {
+            String imgFileStr = imgService.upload(file);
+            if(imgFileStr!=null){
+                listProof.add(imgFileStr);
+            }
+        }
+        String listAsString = linkedListToString(listProof);
+        eleAl.setProof(listAsString);
         //将报告上传至审核
         emissionService.finishEmission(json,"电解铝");
         return json;
     }
-    @PostMapping("calculateMgSmelt")
-    public String calculateMgSmelt(@RequestBody EleAl eleAl) throws JsonProcessingException {
+    @PostMapping("/calculateMgSmelt")
+    public String calculateMgSmelt(@RequestBody MgSmelt mgSmelt) throws JsonProcessingException {
         // 使用ObjectMapper转换为JSON字符串
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(eleAl);
+        String json = objectMapper.writeValueAsString(mgSmelt);
 
+        //上传证明材料图片
+        LinkedList<String> listProof=new LinkedList<>();
+        for (MultipartFile file:mgSmelt.getProofFile()) {
+            String imgFileStr = imgService.upload(file);
+            if(imgFileStr!=null){
+                listProof.add(imgFileStr);
+            }
+        }
+        String listAsString = linkedListToString(listProof);
+        mgSmelt.setProof(listAsString);
         //将报告上传至审核
         emissionService.finishEmission(json,"镁冶炼");
         return json;
     }
-    @PostMapping("calculateFlatGlass")
-    public String calculateFlatGlass(@RequestBody EleAl eleAl) throws JsonProcessingException {
+    @PostMapping("/calculateFlatGlass")
+    public String calculateFlatGlass(@RequestBody FlatGlass flatGlass) throws JsonProcessingException {
         // 使用ObjectMapper转换为JSON字符串
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(eleAl);
+        String json = objectMapper.writeValueAsString(flatGlass);
 
+        //上传证明材料图片
+        LinkedList<String> listProof=new LinkedList<>();
+        for (MultipartFile file:flatGlass.getProofFile()) {
+            String imgFileStr = imgService.upload(file);
+            if(imgFileStr!=null){
+                listProof.add(imgFileStr);
+            }
+        }
+        String listAsString = linkedListToString(listProof);
+        flatGlass.setProof(listAsString);
         //将报告上传至审核
         emissionService.finishEmission(json,"平板玻璃");
         return json;
     }
     @GetMapping("/status")
-    public Emission selectByStatus(@RequestParam int status){
+    public List<Emission> selectByStatus(@RequestParam int status){
         return emissionService.selectByStatus(status);
     }
 
     @GetMapping("/type")
-    public Emission selectByStatus(@RequestParam String type){
+    public List<Emission> selectByType(@RequestParam String type){
         return emissionService.selectByType(type);
     }
 
+    @GetMapping("/selectById")
+    public Emission selectById(@RequestParam int id){
+        return emissionService.selectById(id);
+    }
+
     @GetMapping("/updateStatus")
-    public Response updateStatus(@RequestParam int id,@RequestParam int status){
-        emissionService.updateStatus(id,status);
+    public Response updateStatus(@RequestParam int id,@RequestParam int status,@RequestParam int auditor_id){
+        emissionService.updateStatus(id,status,auditor_id);
         if (status==1){
             return new Response().success(null,"已将报告上链");
         }

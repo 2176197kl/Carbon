@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+
+import static com.carbon.util.CarbonUtil.linkedListToString;
 
 @Controller
 @RequestMapping("/company")
@@ -35,15 +38,18 @@ public class CompanyController {
     public Response setCompany(@RequestBody CompanyDTO companyDTO){
         Company company=new Company();
         company.setBossId(hostHolder.getUser().getId());
-
+        company.setName(companyDTO.getName());
+        company.setAdress(companyDTO.getAdress());
         //上传证明材料图片
+        LinkedList<String> listProof=new LinkedList<>();
         for (MultipartFile file:companyDTO.getProof()) {
             String imgFileStr = imgService.upload(file);
             if(imgFileStr!=null){
-                company.getProof().add(imgFileStr);
+                listProof.add(imgFileStr);
             }
         }
-
+        String listAsString = linkedListToString(listProof);
+        company.setProof(listAsString);
         companyService.insertCompany(company);
         return new Response().success(null,"上传成功，待审核中");
     }
