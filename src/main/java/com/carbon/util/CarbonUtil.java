@@ -7,6 +7,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -97,4 +98,19 @@ public class CarbonUtil {
         System.out.println(getJSONString(0, "ok", map));
     }
 
+    public static String linkedListToString(LinkedList<String> list) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        // 遍历链表并添加元素到StringBuilder
+        for (String item : list) {
+            sb.append(item);
+            if (list.indexOf(item) < list.size() - 1) {
+                sb.append(", "); // 在元素之间添加逗号和空格（除了最后一个元素）
+            }
+        }
+
+        sb.append("]");
+        return sb.toString(); // 返回转换后的字符串
+    }
 }

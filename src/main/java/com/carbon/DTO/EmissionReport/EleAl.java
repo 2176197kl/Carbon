@@ -1,8 +1,18 @@
 package com.carbon.DTO.EmissionReport;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class EleAl {
+    private List<MultipartFile> proofFile;
+    private String proof;
+    public List<MultipartFile> getProofFile() {
+        return proofFile;
+    }
+
+    public void setProof(String proof) {this.proof = proof;}
+
     public double eTotal; // 总排放量
     public double eCombustion; // 燃料燃烧排放
     public double eMaterial; // 能源作为原材料用途的排放

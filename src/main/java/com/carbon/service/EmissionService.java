@@ -8,6 +8,8 @@ import com.carbon.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmissionService {
 
@@ -28,15 +30,19 @@ public class EmissionService {
         emissionMapper.finishEmission(emission);
     }
 
-    public Emission selectByStatus(int status) {
+    public List<Emission> selectByStatus(int status) {
         return emissionMapper.selectByStatus(status);
     }
 
-    public Emission selectByType(String type) {
+    public List<Emission> selectByType(String type) {
         return emissionMapper.selectByType(type);
     }
 
-    public void updateStatus(int id,int status) {
-        emissionMapper.updateStatus(id,status);
+    public void updateStatus(int id,int status,int auditor_id) {
+        emissionMapper.updateStatus(id,status,auditor_id);
+    }
+
+    public Emission selectById(int id) {
+        return emissionMapper.selectById(id);
     }
 }

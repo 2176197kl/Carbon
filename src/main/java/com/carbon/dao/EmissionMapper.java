@@ -2,7 +2,10 @@ package com.carbon.dao;
 
 import com.carbon.entity.Emission;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -12,9 +15,9 @@ public interface EmissionMapper {
 
      Emission selectById(int Id);
 
-    Emission selectByStatus(int status);
+    List<Emission> selectByStatus(int status);
 
-    Emission selectByType(String type);
+    List<Emission> selectByType(String type);
 
-    void updateStatus(int id,int status);
+    void updateStatus(int id,int status,int auditor_id);
 }

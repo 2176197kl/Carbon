@@ -8,7 +8,7 @@ public class Company {
     private int bossId;
     private String name;
     private String adress;
-    private List<String> proof;
+    private String proof;
     private Date createTime;
 
     public Date getCreateTime() {
@@ -51,11 +51,11 @@ public class Company {
         this.adress = adress;
     }
 
-    public List<String> getProof() {
+    public String getProof() {
         return proof;
     }
 
-    public void setProof(List<String> proof) {
+    public void setProof(String proof) {
         this.proof = proof;
     }
 
