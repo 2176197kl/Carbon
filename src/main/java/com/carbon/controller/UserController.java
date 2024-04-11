@@ -1,8 +1,5 @@
 package com.carbon.controller;
 
-import com.carbon.DTO.CompanyDTO;
-import com.carbon.DTO.Response;
-import com.carbon.entity.Company;
 import com.carbon.util.HostHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -261,12 +258,12 @@ public class UserController implements CarbonConstant {
 
 
 
-    //审核公司绑定
-    @PostMapping
-    public Response auditBindCompany(){return new Response().success("绑定成功",null);}
-
-
-    //审核公司绑定
-    @PostMapping
-    public Response applyBindCompany(){return new Response().success("已申请",null);}
+//    //审核公司绑定
+//    @PostMapping
+//    public Response auditBindCompany(){return new Response().success("绑定成功",null);}
+//
+//
+//    //审核公司绑定
+//    @PostMapping
+//    public Response applyBindCompany(){return new Response().success("已申请",null);}
 }

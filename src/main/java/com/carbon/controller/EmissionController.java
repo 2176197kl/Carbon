@@ -142,7 +142,7 @@ public class EmissionController {
     }
 
     @GetMapping("/updateStatus")
-    public Response updateStatus(@RequestParam int id,@RequestParam int status,@RequestParam int auditor_id){
+    public Response updateStatus(@RequestParam int id, @RequestParam int status, @RequestParam int auditor_id){
         emissionService.updateStatus(id,status,auditor_id);
         if (status==1){
             return new Response().success(null,"已将报告上链");

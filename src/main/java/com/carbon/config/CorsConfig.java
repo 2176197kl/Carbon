@@ -23,8 +23,8 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin(allowedOrigins); // 允许所有来源
-        config.addAllowedHeader(allowedHeaders); // 允许所有头
+        config.addAllowedOrigin("*"); // 允许所有来源
+        config.addAllowedHeader("*"); // 允许所有头
         config.addAllowedMethod("*"); // 允许所有方法
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

@@ -100,17 +100,17 @@ public class CarbonUtil {
 
     public static String linkedListToString(LinkedList<String> list) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+//        sb.append("[");
 
         // 遍历链表并添加元素到StringBuilder
         for (String item : list) {
             sb.append(item);
             if (list.indexOf(item) < list.size() - 1) {
-                sb.append(", "); // 在元素之间添加逗号和空格（除了最后一个元素）
+                sb.append(";"); // 在元素之间添加逗号和空格（除了最后一个元素）
             }
         }
 
-        sb.append("]");
+//        sb.append("]");
         return sb.toString(); // 返回转换后的字符串
     }
 }

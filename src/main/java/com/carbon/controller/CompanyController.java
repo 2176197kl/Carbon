@@ -7,7 +7,6 @@ import com.carbon.service.CompanyService;
 import com.carbon.service.ImgService;
 import com.carbon.service.UserService;
 import com.carbon.util.HostHolder;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import static com.carbon.util.CarbonUtil.linkedListToString;
 
